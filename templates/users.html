@@ -1,0 +1,39 @@
+{{define "users"}}
+    {{template "header"}}
+
+    <main class="container mt-5">
+        <h1 class="mb-4">Выберите пользователя</h1>
+        <div class="row">
+            {{range .}}
+            <div class="col-md-4 mb-3">
+                <div class="card user-card" data-user-id="{{.Id}}" data-user-name="{{.Name}}"
+                    data-user-role="{{.Role}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{.Name}}</h5>
+                        <p class="card-text">Роль: {{.Role}}</p>
+                        <button class="btn btn-primary select-user">Войти как {{.Name}}</button>
+                    </div>
+                </div>
+            </div>
+            {{else}}
+            <p>Нет пользователей для отображения</p>
+            {{end}}
+        </div>
+    </main>
+
+    <style>
+        .user-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .user-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    {{template "footer"}}
+
+
+
+{{end}}
