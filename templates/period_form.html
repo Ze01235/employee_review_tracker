@@ -1,0 +1,30 @@
+{{ define "period_form" }}
+{{ template "header" }}
+<div class="container mt-4">
+    <h1 id="form-title">
+        {{ if .ID }}Редактирование периода{{ else }}Создание периода{{ end }}
+    </h1>
+    <div id="period-form-container">
+        <form id="periodForm">
+            <div class="mb-3">
+                <label for="name" class="form-label">Название</label>
+                <input type="text" class="form-control" id="name" name="name" 
+                       value="{{ .Name }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="start_date" class="form-label">Дата начала</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" 
+                       value="{{ .StartDate }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="end_date" class="form-label">Дата окончания</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" 
+                       value="{{ .EndDate }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <a href="/admin/periods" class="btn btn-outline-primary">Отмена</a>
+        </form>
+    </div>
+</div>
+{{ template "footer" }}
+{{ end }}

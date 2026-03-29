@@ -1,0 +1,155 @@
+body {
+    background-color: #f8f9fa;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #fff !important;
+}
+
+.user-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    border-radius: 0.75rem;
+    background: white;
+}
+
+.user-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.user-card .card-title {
+    font-weight: 600;
+    color: #1e2a3a;
+}
+
+.user-card .card-text {
+    color: #4a627a;
+    font-size: 0.9rem;
+}
+
+.user-card .btn {
+    border-radius: 2rem;
+    padding: 0.4rem 1rem;
+    font-weight: 500;
+}
+
+.table {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.table thead th {
+    background-color: #e9ecef;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #1e2a3a;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.btn-secondary {
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.4rem 1rem;
+}
+
+.btn-outline-primary {
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.4rem 1rem;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.4rem 1rem;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.btn-outline-light {
+    border-radius: 2rem;
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.form-label {
+    font-weight: 500;
+    color: #1e2a3a;
+    margin-bottom: 0.3rem;
+}
+
+.form-control,
+.form-select {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+#review-detail dl {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+dt {
+    font-weight: 600;
+    color: #1e2a3a;
+}
+
+dd {
+    color: #2c3e50;
+}
+
+footer {
+    margin-top: 3rem;
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .user-card {
+        margin-bottom: 1rem;
+    }
+}

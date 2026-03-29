@@ -1,10 +1,31 @@
 {{define "reviews"}}
 {{template "header"}}
 
-<div class="container mt-4">
-    <h1>Список оценок (reviews)</h1>
-    <div id="reviews-container">Загрузка...</div>
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <form id="filter-form">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="period_id" class="form-label">Период</label>
+                    <select id="period_id" name="period_id" class="form-select">
+                        <option value="">Все периоды</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="employee_id" class="form-label">Сотрудник</label>
+                    <select id="employee_id" name="employee_id" class="form-select">
+                        <option value="">Все сотрудники</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">Применить фильтры</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
+
+<div id="reviews-container">Загрузка...</div>
 
 {{template "footer"}}
 {{end}}

@@ -1,15 +1,14 @@
-// static/js/review_form.js
 (async function() {
+    const titleEl = document.getElementById('form-title');
+    const container = document.getElementById('review-form-container');
+    if (!container) return; // не страница формы
+
     const path = window.location.pathname;
     const match = path.match(/\/reviews\/(\d+)\/edit/);
     const isEdit = match !== null;
     const reviewId = isEdit ? match[1] : null;
 
-    const titleEl = document.getElementById('form-title');
-    const container = document.getElementById('review-form-container');
-
     try {
-        // Загружаем справочники
         const [employees, periods] = await Promise.all([
             apiFetch('/api/employees').then(r => r.json()),
             apiFetch('/api/periods').then(r => r.json())
@@ -18,19 +17,16 @@
         let reviewData = null;
         if (isEdit) {
             const reviewResp = await apiFetch(`/api/reviews/${reviewId}`);
-            if (!reviewResp.ok) {
-                throw new Error(`Не удалось загрузить отзыв: ${reviewResp.status}`);
-            }
+            if (!reviewResp.ok) throw new Error(`Не удалось загрузить отзыв: ${reviewResp.status}`);
             reviewData = await reviewResp.json();
-            titleEl.textContent = 'Редактирование отзыва';
+            if (titleEl) titleEl.textContent = 'Редактирование отзыва';
         } else {
-            titleEl.textContent = 'Создание отзыва';
+            if (titleEl) titleEl.textContent = 'Создание отзыва';
         }
 
-        // Генерируем форму
         let optionsEmployees = employees.map(e => `<option value="${e.id}" ${reviewData && reviewData.EmployeeID === e.id ? 'selected' : ''}>${escapeHtml(e.name)} (${e.role})</option>`).join('');
         let optionsReviewers = employees.map(e => `<option value="${e.id}" ${reviewData && reviewData.ReviewerID === e.id ? 'selected' : ''}>${escapeHtml(e.name)} (${e.role})</option>`).join('');
-        let optionsPeriods = periods.map(p => `<option value="${p.ID}" ${reviewData && reviewData.PeriodID === p.ID ? 'selected' : ''}>${escapeHtml(p.name)} (${p.StartDate} - ${p.EndDate})</option>`).join('');
+        let optionsPeriods = periods.map(p => `<option value="${p.id}" ${reviewData && reviewData.PeriodID === p.id ? 'selected' : ''}>${escapeHtml(p.name)} (${p.start_date} - ${p.end_date})</option>`).join('');
 
         container.innerHTML = `
             <form id="reviewForm">
@@ -57,27 +53,25 @@
                 </div>
                 <div class="mb-3">
                     <label for="soft_skills_score" class="form-label">Soft skills (1-5)</label>
-                    <input type="number" class="form-control" id="soft_skills_score" name="soft_skills_score" min="1" max="5" value="${reviewData ? reviewData.SoftSkillsScore : ''}" required>
+                    <input type="number" class="form-control" id="soft_skills_score" name="soft_skills_score" min="1" max="5" value="${reviewData ? reviewData.soft_skills_score : ''}" required>
                 </div>
                 <div class="mb-3">
                     <label for="hard_skills_score" class="form-label">Hard skills (1-5)</label>
-                    <input type="number" class="form-control" id="hard_skills_score" name="hard_skills_score" min="1" max="5" value="${reviewData ? reviewData.HardSkillsScore : ''}" required>
+                    <input type="number" class="form-control" id="hard_skills_score" name="hard_skills_score" min="1" max="5" value="${reviewData ? reviewData.hard_skills_score : ''}" required>
                 </div>
                 <div class="mb-3">
                     <label for="comment" class="form-label">Комментарий</label>
-                    <textarea class="form-control" id="comment" name="comment" rows="3" required>${reviewData ? escapeHtml(reviewData.Comment) : ''}</textarea>
+                    <textarea class="form-control" id="comment" name="comment" rows="3" required>${reviewData ? escapeHtml(reviewData.comment) : ''}</textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
-                <a href="/reviews" class="btn btn-secondary">Отмена</a>
+                <a href="/reviews" class="btn btn-outline-primary">Отмена</a>
             </form>
         `;
 
-        // Обработчик отправки
         document.getElementById('reviewForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
-            // Преобразуем поля в числа
             data.employee_id = parseInt(data.employee_id);
             data.reviewer_id = parseInt(data.reviewer_id);
             data.period_id = parseInt(data.period_id);

@@ -1,4 +1,3 @@
-// Функция сохранения выбранного пользователя
 function selectUser(userId, userName, userRole) {
     localStorage.setItem('user_id', userId);
     localStorage.setItem('user_name', userName);
@@ -8,7 +7,6 @@ function selectUser(userId, userName, userRole) {
     window.location.href = '/';
 }
 
-// Назначаем обработчики на кнопки и карточки
 document.addEventListener('DOMContentLoaded', function () {
     const buttons = document.querySelectorAll('.select-user');
     buttons.forEach(btn => {
@@ -22,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Также можно разрешить клик по всей карточке
     const cards = document.querySelectorAll('.user-card');
     cards.forEach(card => {
         card.addEventListener('click', function () {
@@ -45,4 +42,29 @@ async function apiFetch(url, options = {}) {
     const response = await fetch(url, options);
     return response;
 }
+
+function selectUser(userId, userName, userRole) {
+    localStorage.setItem('user_id', userId);
+    localStorage.setItem('user_name', userName);
+    localStorage.setItem('user_role', userRole);
+    document.cookie = `user_id=${userId}; path=/; max-age=86400`;
+    window.location.href = '/';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.select-user');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const card = this.closest('.user-card');
+            selectUser(card.dataset.userId, card.dataset.userName, card.dataset.userRole);
+        });
+    });
+    const cards = document.querySelectorAll('.user-card');
+    cards.forEach(card => {
+        card.addEventListener('click', function () {
+            selectUser(this.dataset.userId, this.dataset.userName, this.dataset.userRole);
+        });
+    });
+});
 

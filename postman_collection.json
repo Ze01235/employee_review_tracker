@@ -1,0 +1,253 @@
+{
+  "info": {
+    "name": "Employee Review Tracker API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get all users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/employees",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "employees"]
+            }
+          }
+        },
+        {
+          "name": "Get current user",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "1"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/me",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Review Periods",
+      "item": [
+        {
+          "name": "Get all periods",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/periods",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "periods"]
+            }
+          }
+        },
+        {
+          "name": "Create period (admin only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "1"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Q3 2025\",\n  \"start_date\": \"2025-07-01\",\n  \"end_date\": \"2025-09-30\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/periods",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "periods"]
+            }
+          }
+        },
+        {
+          "name": "Update period",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "1"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Q3 2025 (updated)\",\n  \"start_date\": \"2025-07-01\",\n  \"end_date\": \"2025-10-15\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/periods/1",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "periods", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete period",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "1"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/periods/1",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "periods", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Get all reviews (with filters)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "1"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/reviews?period_id=1&employee_id=3",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "reviews"],
+              "query": [
+                {
+                  "key": "period_id",
+                  "value": "1"
+                },
+                {
+                  "key": "employee_id",
+                  "value": "3"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get review by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "1"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/reviews/1",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "reviews", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create review (admin/manager)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "2"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": 3,\n  \"reviewer_id\": 2,\n  \"period_id\": 2,\n  \"soft_skills_score\": 4,\n  \"hard_skills_score\": 5,\n  \"comment\": \"Отличная работа\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/reviews",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "reviews"]
+            }
+          }
+        },
+        {
+          "name": "Update review (draft only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "2"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": 3,\n  \"reviewer_id\": 2,\n  \"period_id\": 2,\n  \"soft_skills_score\": 3,\n  \"hard_skills_score\": 4,\n  \"comment\": \"Исправленный комментарий\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/reviews/2",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "reviews", "2"]
+            }
+          }
+        },
+        {
+          "name": "Publish review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-User-Id",
+                "value": "2"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/reviews/2/publish",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "reviews", "2", "publish"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

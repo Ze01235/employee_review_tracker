@@ -1,39 +1,37 @@
 {{define "users"}}
-    {{template "header"}}
+{{template "header"}}
 
-    <main class="container mt-5">
-        <h1 class="mb-4">Выберите пользователя</h1>
-        <div class="row">
-            {{range .}}
-            <div class="col-md-4 mb-3">
-                <div class="card user-card" data-user-id="{{.Id}}" data-user-name="{{.Name}}"
-                    data-user-role="{{.Role}}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{.Name}}</h5>
-                        <p class="card-text">Роль: {{.Role}}</p>
-                        <button class="btn btn-primary select-user">Войти как {{.Name}}</button>
-                    </div>
+<div class="container mt-4">
+    <h1 class="mb-4 fs-2 fw-semibold">Выберите пользователя</h1>
+    <div class="row g-4">
+        {{range .}}
+        <div class="col-md-4">
+            <div class="card user-card h-100 shadow-sm border-0" data-user-id="{{.Id}}" data-user-name="{{.Name}}" data-user-role="{{.Role}}">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{.Name}}</h5>
+                    <p class="card-text text-muted">Роль: {{.Role}}</p>
+                    <button class="btn btn-primary select-user">Войти</button>
                 </div>
             </div>
-            {{else}}
-            <p>Нет пользователей для отображения</p>
-            {{end}}
         </div>
-    </main>
+        {{else}}
+        <div class="col-12">
+            <div class="alert alert-warning">Нет пользователей для отображения</div>
+        </div>
+        {{end}}
+    </div>
+</div>
 
-    <style>
-        .user-card {
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+<style>
+    .user-card {
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .user-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+    }
+</style>
 
-        .user-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-    </style>
-    {{template "footer"}}
-
-
-
+{{template "footer"}}
 {{end}}

@@ -24,15 +24,14 @@ CREATE TABLE reviews (
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
     CONSTRAINT chk_scores_range CHECK (
-        soft_skills_score BETWEEN 0 AND 100 AND 
-        hard_skills_score BETWEEN 0 AND 100
+        soft_skills_score BETWEEN 1 AND 5 AND 
+        hard_skills_score BETWEEN 1 AND 5
     )
 );
 
 CREATE INDEX idx_reviews_employee_period ON reviews(employee_id, period_id);
 CREATE INDEX idx_reviews_reviewer_period ON reviews(reviewer_id, period_id);
 CREATE INDEX idx_reviews_status_created ON reviews(status, created_at);
-
 
 -- +goose Down
 DROP TABLE IF EXISTS reviews;

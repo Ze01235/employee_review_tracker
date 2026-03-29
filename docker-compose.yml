@@ -1,0 +1,73 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  test-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: tracker_test
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_PASSWORD: root
+      DB_NAME: tracker
+      DB_PORT: 5432
+    volumes:
+      - ./migrations:/migrations
+    command: sh -c "
+      goose -dir /migrations postgres \"postgres://postgres:root@db:5432/tracker?sslmode=disable\" up &&
+      ./app"
+
+  test:
+    image: golang:1.26-alpine
+    depends_on:
+      test-db:
+        condition: service_healthy
+    environment:
+      DB_HOST: test-db
+      DB_USER: postgres
+      DB_PASSWORD: root
+      DB_NAME: tracker_test
+      DB_PORT: 5432
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "
+      apk add --no-cache curl &&
+      curl -fsSL https://github.com/pressly/goose/releases/download/v3.27.0/goose_linux_x86_64 -o /usr/local/bin/goose &&
+      chmod +x /usr/local/bin/goose &&
+      goose -dir /app/migrations postgres \"postgres://postgres:root@test-db:5432/tracker_test?sslmode=disable\" up &&
+      go test -v ./..."
+
+volumes:
+  pgdata:
